@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="assets/images/football.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/soccer-ball-variant.png" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <title>Torneio de Futebol - Bolão</title>
@@ -21,12 +21,29 @@
     <div class="contentForms">
         <h1>Equipes</h1>
 
-        <form>
+        <form id="forms">
             <label for="teamsAdd">Preencha com times e seus estados</label>
-            <textarea name="teamsAdd" cols="30" rows="10" placeholder="Flamengo;Rio de Janeiro"></textarea>
+            <textarea cols="30" rows="10" placeholder="Flamengo;Rio de Janeiro" id="teamsAdd" required></textarea>
             <button type="submit">Gerar confrontos</button>
         </form>
     </div>
+
+    <table>
+        <thead>
+            <td>Time</td>
+            <td>Time</td>
+            <td>Goals do Time I</td>
+            <td>Goals do Time 2</td>
+            <td>Estado</td>
+        </thead>
+        <tbody>
+            <td>Team 1</td>
+            <td>Team 2</td>
+            <td>Goals</td>
+            <td>Goals</td>
+        </tbody>
+    </table>
     
+    <script src="assets/script/main.js"></script>
 </body>
 </html>
