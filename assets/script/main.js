@@ -7,10 +7,7 @@ function generateSoccerMatches(e) {
 
     if(validationLengthOfTeams(arrayTeams)) {
         const teamsObject = generateTeamsObject(arrayTeams);
-        const middleList = Math.ceil(teamsObject.length / 2);
-        const group1 = teamsObject.slice(0, middleList);
-        const group2 = teamsObject.slice(middleList);
-        generateFirstRound(group1, group2);
+        generateRounds(teamsObject);
     } else {
         alert("O número de times precisa ser par!");
         return;
@@ -31,21 +28,41 @@ function generateTeamsObject(arrayTeams) {
 
     for(let i = 0; arrayTeams.length > i; i++) {
         let team = arrayTeams[i].split(";");
-        teams[i] = { nameTeam: team[0], stateOfTeam: team[1], wins: 0, draws: 0};
+        teams[i] = { nameTeam: team[0], stateOfTeam: team[1], goals: 0, points: 0, wins: 0, draws: 0};
     }
-
     return teams;
 }
 
-function generateFirstRound(group1, group2) {
+function generateRounds(teamsObject) {
     const matches = [];
-    console.log(group1)
+    const matches2 = [];
+    const middleList = Math.ceil(teamsObject.length / 2);
+    const group1 = teamsObject.slice(0, middleList);
+    const group2 = teamsObject.slice(middleList);
+    generateMatches(group1, group2, matches);
+    console.log(matches);
+}
 
-    for(let i = 0; group1.length > i; i++) {
-        let teamA = group1[i];
-        let teamB = group2[i];
+function generateMatches(group1, group2, matches, next = 0) {
+    for(let i = next; group1.length + next > i; i++) {
+        let teamA = group1[i - next];
+        let teamB = group2[i - next];
+
         teamA.goals = generateGoals();
         teamB.goals = generateGoals();
+
+        if(teamA.goals > teamB.goals) {
+            teamA.wins += 1;
+            teamA.points += 3;
+        } else if(teamA.goals === teamB.goals) {
+            teamA.draws += 1;
+            teamB.draws += 1;
+            teamA.points += 1;
+            teamB.points += 1;
+        } else {
+            teamB.wins += 1;
+            teamB.points += 3;
+        }
 
         matches[i] = {
             team1: teamA.nameTeam,
@@ -54,10 +71,14 @@ function generateFirstRound(group1, group2) {
             goalsOfTeamB: teamB.goals,
             state: teamA.stateOfTeam
         }
+
     }
-    console.log(matches);
 }
 
 function generateGoals() {
     return Math.round(Math.random() * (10));
+}
+
+function changeTeams() {
+    
 }
