@@ -1,0 +1,80 @@
+/* Default settings */
+
+:root {
+    --primary-color: #172A65;
+    --primary-color-hover: #121e42;
+    --second-color: #FFFFFF;
+    --spacing-pattern: 10px;
+    --radius-pattern: 5px;
+    --font-pattern: 1.2rem;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    background-image: url('../images/stadium-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    font-size: 16px;
+}
+
+textarea {
+    resize: none;
+    font-size: var(--font-pattern);
+    padding: var(--spacing-pattern);
+    outline-color: var(--primary-color);
+}
+
+button {
+    cursor: pointer;
+}
+
+.contentForms {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--second-color);
+    border-radius: var(--radius-pattern);
+    padding: var(--spacing-pattern);
+    min-height: 45vh;
+}
+
+.contentForms h1, form {
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.contentForms form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    gap: var(--spacing-pattern);
+}
+
+.contentForms form label {
+    font-size: calc(var(--font-pattern) - .1rem);
+}
+
+.contentForms form button {
+    padding: var(--spacing-pattern);
+    background-color: var(--primary-color);
+    color: var(--second-color);
+    border: 0;
+    font-size: var(--font-pattern);
+    border-radius: var(--radius-pattern);
+    transition: all ease-in-out .3s;
+}
+
+.contentForms form button:hover {
+    background-color: var(--primary-color-hover);
+}

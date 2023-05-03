@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,11 +8,25 @@
     <meta name="keywords" content="soccer, team, challenge, javascript, Ignis">
     <meta name="author" content="Arthur Pereira da Silva">
 
-    <link rel="shortcut icon" href="assets/football.png" type="image/x-icon">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/images/football.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <title>Torneio de Futebol - Bolão</title>
 </head>
 <body>
+    <div class="contentForms">
+        <h1>Equipes</h1>
+
+        <form>
+            <label for="teamsAdd">Preencha com times e seus estados</label>
+            <textarea name="teamsAdd" cols="30" rows="10" placeholder="Flamengo;Rio de Janeiro"></textarea>
+            <button type="submit">Gerar confrontos</button>
+        </form>
+    </div>
     
 </body>
 </html>
