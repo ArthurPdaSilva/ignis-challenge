@@ -6,22 +6,20 @@ const winComponent = document.getElementById("winComponent");
 const forms = document.getElementById("forms");
 const backButton = document.getElementById("backButton");
 const winButton = document.getElementById("winButton");
-const closeBtn = document.getElementById("close");
+const closeButton = document.getElementById("close");
 
 forms.addEventListener('submit', generateSoccerMatches);
 backButton.addEventListener('click', handleBackToForm);
 winButton.addEventListener('click', handleToWinComponent);
-closeBtn.addEventListener('click', handleCloseModal);
+closeButton.addEventListener('click', handleCloseModal);
 
 function generateSoccerMatches(e) {
     e.preventDefault();
     const arrayTeams = getTeamsArray();
 
     if(validationLengthOfTeams(arrayTeams)) {
-        alert("Gerando resultados...");
-        contentResults.style.display = "flex";
-        contentForms.style.display = "none";
-        const teamsObject = generateTeamsObject(arrayTeams);
+        openResults();
+        const teamsObject = generateTeamsToObject(arrayTeams);
         generateRounds(teamsObject);
     } else {
         alert("O número de times precisa ser par!");
@@ -38,13 +36,20 @@ function validationLengthOfTeams(arrayTeams) {
     return arrayTeams.length % 2 === 0;
 }
 
-function generateTeamsObject(arrayTeams) {
+function openResults() {
+    alert("Gerando resultados...");
+    contentResults.style.display = "flex";
+    contentForms.style.display = "none";
+}
+
+function generateTeamsToObject(arrayTeams) {
     const teams = [];
 
     for(let i = 0; arrayTeams.length > i; i++) {
         let team = arrayTeams[i].split(";");
         teams[i] = { nameTeam: team[0], stateOfTeam: team[1], goalsMatch: 0, goals: 0, points: 0, wins: 0, draws: 0};
     }
+
     return teams;
 }
 
@@ -53,61 +58,31 @@ function generateRounds(teamsObject) {
     const group1 = teamsObject.slice(0, middleList);
     const group2 = teamsObject.slice(middleList);
     firstTurn(group1, group2);
+    secondTurn(group1, group2);
 }
 
 function firstTurn(group1, group2) {
     const matcheFirstTurn = document.getElementById("matcheFirstTurn");
     const matcheFirstReturnTurn = document.getElementById("matcheFirstReturnTurn");
-
     const turn = [];
     const returnMatches = [];
     
-    generateMatches(group1, group2, turn);
-    generateMatches(group2, group1, returnMatches);
-    
-    addDoubleRound([...turn, ...returnMatches])
-
+    startingMatches(group1, group2, turn, returnMatches);
     generateTrs(turn, matcheFirstTurn);
     generateTrs(returnMatches, matcheFirstReturnTurn);
-    
-    secondTurn(group1, group2);
 }
 
 function secondTurn(group1, group2) {
     const matcheSecondTurn = document.getElementById("matcheSecondTurn");
     const matcheSecondReturnTurn = document.getElementById("matcheSecondReturnTurn");
-
     const secondTurn = [];
     const secondReturnMatches = [];
     const { group3, group4 } = changeTeams(group1, group2);
 
-    generateMatches(group3, group4, secondTurn);
-    generateMatches(group4, group3, secondReturnMatches);
-    addDoubleRound([...secondTurn, ...secondReturnMatches]);
-
+    startingMatches(group3, group4, secondTurn, secondReturnMatches);
     generateTrs(secondTurn, matcheSecondTurn);
     generateTrs(secondReturnMatches, matcheSecondReturnTurn);
-    
     showWinTeam([...group3, ...group4]);
-}
-
-function generateTrs(arrayTeams, tbody) {
-    tbody.innerHTML = "";
-
-    arrayTeams.map(item => {
-        let tr = document.createElement("tr");
-
-        tr.innerHTML = `
-            <td>${item.team1}</td>
-            <td>${item.team2}</td>
-            <td>${item.goalsMatchOfTeamA} x ${item.goalsMatchOfTeamB}</td>
-            <td>${item.state}</td>
-            <td>${item.double}</td>
-        `;
-
-        tbody.appendChild(tr);
-
-    });
 }
 
 function changeTeams(group1, group2) {
@@ -116,6 +91,12 @@ function changeTeams(group1, group2) {
     group4.push(group3.pop());
     group3.splice(1, 0, group4.shift()); 
     return { group3, group4 };
+}
+
+function startingMatches(groupOne, groupTwo, turn, returnMatches) {
+    generateMatches(groupOne, groupTwo, turn);
+    generateMatches(groupTwo, groupOne, returnMatches);
+    addDoubleRound([...turn, ...returnMatches])
 }
 
 function generateMatches(group1, group2, matches) {
@@ -128,18 +109,7 @@ function generateMatches(group1, group2, matches) {
         teamA.goals += teamA.goalsMatch;
         teamB.goals += teamB.goalsMatch;
 
-        if(teamA.goalsMatch > teamB.goalsMatch) {
-            teamA.wins += 1;
-            teamA.points += 3;
-        } else if(teamA.goalsMatch === teamB.goalsMatch) {
-            teamA.draws += 1;
-            teamB.draws += 1;
-            teamA.points += 1;
-            teamB.points += 1;
-        } else {
-            teamB.wins += 1;
-            teamB.points += 3;
-        }     
+        verifyPointsTeam(teamA, teamB);
 
         matches[i] = {
             team1: teamA.nameTeam,
@@ -154,6 +124,21 @@ function generateMatches(group1, group2, matches) {
 
 function generateGoalsMatch() {
     return Math.round(Math.random() * (10));
+}
+
+function verifyPointsTeam(teamA, teamB) {
+    if(teamA.goalsMatch > teamB.goalsMatch) {
+        teamA.wins += 1;
+        teamA.points += 3;
+    } else if(teamA.goalsMatch === teamB.goalsMatch) {
+        teamA.draws += 1;
+        teamB.draws += 1;
+        teamA.points += 1;
+        teamB.points += 1;
+    } else {
+        teamB.wins += 1;
+        teamB.points += 3;
+    }     
 }
 
 function addDoubleRound(arrayTeams) {
@@ -184,6 +169,25 @@ function checkingDoubleRound(itemOne, itemTwo) {
     } 
 }
 
+function generateTrs(arrayTeams, tbody) {
+    tbody.innerHTML = "";
+
+    arrayTeams.map(item => {
+        let tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${item.team1}</td>
+            <td>${item.team2}</td>
+            <td>${item.goalsMatchOfTeamA} x ${item.goalsMatchOfTeamB}</td>
+            <td>${item.state}</td>
+            <td>${item.double}</td>
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+}
+
 function showWinTeam(arrayTeams) {
     let winTeam = arrayTeams[0];
     for(let c = 1; arrayTeams.length > c; c++) {
@@ -197,7 +201,7 @@ function showWinTeam(arrayTeams) {
 
 function generateModalContent(winTeam) {
     winComponent.innerHTML = "";
-    winComponent.appendChild(closeBtn);
+    winComponent.appendChild(closeButton);
     addHeaderInModal(winTeam);
     addUlInModal(winTeam);
 }
