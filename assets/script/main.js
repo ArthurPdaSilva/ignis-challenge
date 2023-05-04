@@ -1,11 +1,19 @@
+const contentForms = document.getElementById("contentForms");
+const contentResults = document.getElementById("contentResults");
 const forms = document.getElementById("forms");
+const backButton = document.getElementById("backButton");
+
 forms.addEventListener('submit', generateSoccerMatches);
+backButton.addEventListener('click', handleBackToForm);
 
 function generateSoccerMatches(e) {
     e.preventDefault();
     const arrayTeams = getTeamsArray();
 
     if(validationLengthOfTeams(arrayTeams)) {
+        alert("Gerando resultados...");
+        contentResults.style.display = "flex";
+        contentForms.style.display = "none";
         const teamsObject = generateTeamsObject(arrayTeams);
         generateRounds(teamsObject);
     } else {
@@ -34,19 +42,78 @@ function generateTeamsObject(arrayTeams) {
 }
 
 function generateRounds(teamsObject) {
-    const matches = [];
-    const matches2 = [];
     const middleList = Math.ceil(teamsObject.length / 2);
     const group1 = teamsObject.slice(0, middleList);
     const group2 = teamsObject.slice(middleList);
-    generateMatches(group1, group2, matches);
-    console.log(matches);
+    firstTurn(group1, group2);
 }
 
-function generateMatches(group1, group2, matches, next = 0) {
-    for(let i = next; group1.length + next > i; i++) {
-        let teamA = group1[i - next];
-        let teamB = group2[i - next];
+function firstTurn(group1, group2) {
+    const matcheFirstTurn = document.getElementById("matcheFirstTurn");
+    const matcheFirstReturnTurn = document.getElementById("matcheFirstReturnTurn");
+
+    const turn = [];
+    const returnMatches = [];
+    
+    generateMatches(group1, group2, turn);
+    generateMatches(group2, group1, returnMatches);
+    
+    addDoubleRound([...turn, ...returnMatches])
+
+    generateTrs(turn, matcheFirstTurn);
+    generateTrs(returnMatches, matcheFirstReturnTurn);
+    
+    secondTurn(group1, group2);
+}
+
+function secondTurn(group1, group2) {
+    const matcheSecondTurn = document.getElementById("matcheSecondTurn");
+    const matcheSecondReturnTurn = document.getElementById("matcheSecondReturnTurn");
+
+    const secondTurn = [];
+    const secondReturnMatches = [];
+    const { group3, group4 } = changeTeams(group1, group2);
+
+    generateMatches(group3, group4, secondTurn);
+    generateMatches(group4, group3, secondReturnMatches);
+
+    addDoubleRound([...secondTurn, ...secondReturnMatches]);
+
+    generateTrs(secondTurn, matcheSecondTurn);
+    generateTrs(secondReturnMatches, matcheSecondReturnTurn);
+}
+
+function generateTrs(arrayTeams, tbody) {
+    tbody.innerHTML = "";
+
+    arrayTeams.map(item => {
+        let tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${item.team1}</td>
+            <td>${item.team2}</td>
+            <td>${item.goalsOfTeamA} x ${item.goalsOfTeamB}</td>
+            <td>${item.state}</td>
+            <td>${item.double}</td>
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+}
+
+function changeTeams(group1, group2) {
+    const group3 = group1;
+    const group4 = group2;
+    group4.push(group3.pop());
+    group3.splice(1, 0, group4.shift()); 
+    return { group3, group4 };
+}
+
+function generateMatches(group1, group2, matches) {
+    for(let i = 0; group1.length > i; i++) {
+        let teamA = group1[i];
+        let teamB = group2[i];
 
         teamA.goals = generateGoals();
         teamB.goals = generateGoals();
@@ -79,6 +146,36 @@ function generateGoals() {
     return Math.round(Math.random() * (10));
 }
 
-function changeTeams() {
-    
+function handleBackToForm() {
+    contentResults.style.display = "none";
+    contentForms.style.display = "flex";
+    alert("Voltando...");
+}
+
+function addDoubleRound(arrayTeams) {
+    let c = 1;
+    let i = c;
+    let index = 0;
+
+    for(let i = 0; i < arrayTeams.length; i++) {
+        arrayTeams[i].double = "";
+    }
+
+    while(index < 5) {
+        while(i <= 5) {
+            checkingDoubleRound(arrayTeams[index], arrayTeams[i]);
+            i++;
+        }
+
+        c++;
+        i = c;
+        index++;
+    }
+}
+
+function checkingDoubleRound(itemOne, itemTwo) {
+    if(itemOne.state === itemTwo.state) {
+        itemOne.double = "(Rodada Dupla)";
+        itemTwo.double = "(Rodada Dupla)";
+    } 
 }

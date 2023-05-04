@@ -18,7 +18,7 @@
     <title>Torneio de Futebol - Bolão</title>
 </head>
 <body>
-    <div class="contentForms">
+    <div class="contentForms" id="contentForms">
         <h1>Equipes</h1>
 
         <form id="forms">
@@ -28,22 +28,88 @@
         </form>
     </div>
 
-    <table>
-        <thead>
-            <td>Time</td>
-            <td>Time</td>
-            <td>Goals do Time I</td>
-            <td>Goals do Time 2</td>
-            <td>Estado</td>
-        </thead>
-        <tbody>
-            <td>Team 1</td>
-            <td>Team 2</td>
-            <td>Goals</td>
-            <td>Goals</td>
-        </tbody>
-    </table>
+    <div id="contentResults" class="contentResults">
+        <h1>Primeira rodada</h1>
+        <div class="games">
+            <div class="matche">
+                <h2>Jogo de ida</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mandante</th>
+                            <th>Adversário</th>
+                            <th>Goals</th>
+                            <th>Estado</th>
+                            <th>Rodada dupla</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matcheFirstTurn">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="rematche">
+                <h2>Jogo de volta</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mandante</th>
+                            <th>Adversário</th>
+                            <th>Goals</th>
+                            <th>Estado</th>
+                            <th>Rodada dupla</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matcheFirstReturnTurn"> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <h1>Segunda rodada</h1>
+        <div class="games">
+            <div class="matche">
+                <h2>Jogo de ida</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mandante</th>
+                            <th>Adversário</th>
+                            <th>Goals</th>
+                            <th>Estado</th>
+                            <th>Rodada dupla</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matcheSecondTurn">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="rematche">
+                <h2>Jogo de volta</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mandante</th>
+                            <th>Adversário</th>
+                            <th>Goals</th>
+                            <th>Estado</th>
+                            <th>Rodada dupla</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matcheSecondReturnTurn">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="back" id="backButton">Voltar</button>
+            <button class="win" id="winButton">Verificar campeão</button>
+        </div>
+    </div>
     
-    <script src="assets/script/main.js"></script>
+    <!-- <script src="assets/script/doubleRoundUtil.js" type="module"></script> -->
+    <script src="assets/script/main.js" type="module"></script>
 </body>
 </html>
