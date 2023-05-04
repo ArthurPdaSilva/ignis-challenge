@@ -103,13 +103,7 @@ function generateMatches(group1, group2, matches) {
     for(let i = 0; group1.length > i; i++) {
         let teamA = group1[i];
         let teamB = group2[i];
-
-        teamA.goalsMatch = generateGoalsMatch();
-        teamB.goalsMatch = generateGoalsMatch();
-        teamA.goals += teamA.goalsMatch;
-        teamB.goals += teamB.goalsMatch;
-
-        verifyPointsTeam(teamA, teamB);
+        generateValuesAndAddGoals(teamA, teamB);
 
         matches[i] = {
             team1: teamA.nameTeam,
@@ -122,7 +116,16 @@ function generateMatches(group1, group2, matches) {
     }
 }
 
-function generateGoalsMatch() {
+function generateValuesAndAddGoals(teamA, teamB) {
+    teamA.goalsMatch = generateRandomGoals();
+    teamB.goalsMatch = generateRandomGoals();
+    teamA.goals += teamA.goalsMatch;
+    teamB.goals += teamB.goalsMatch;
+    
+    verifyPointsTeam(teamA, teamB);
+}
+
+function generateRandomGoals() {
     return Math.round(Math.random() * (10));
 }
 
