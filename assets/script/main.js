@@ -1,10 +1,17 @@
 const contentForms = document.getElementById("contentForms");
 const contentResults = document.getElementById("contentResults");
+const modal = document.getElementById("modal");
+const winComponent = document.getElementById("winComponent");
+
 const forms = document.getElementById("forms");
 const backButton = document.getElementById("backButton");
+const winButton = document.getElementById("winButton");
+const closeBtn = document.getElementById("close");
 
 forms.addEventListener('submit', generateSoccerMatches);
 backButton.addEventListener('click', handleBackToForm);
+winButton.addEventListener('click', handleToWinComponent);
+closeBtn.addEventListener('click', handleCloseModal);
 
 function generateSoccerMatches(e) {
     e.preventDefault();
@@ -36,7 +43,7 @@ function generateTeamsObject(arrayTeams) {
 
     for(let i = 0; arrayTeams.length > i; i++) {
         let team = arrayTeams[i].split(";");
-        teams[i] = { nameTeam: team[0], stateOfTeam: team[1], goals: 0, points: 0, wins: 0, draws: 0};
+        teams[i] = { nameTeam: team[0], stateOfTeam: team[1], goalsMatch: 0, goals: 0, points: 0, wins: 0, draws: 0};
     }
     return teams;
 }
@@ -76,11 +83,12 @@ function secondTurn(group1, group2) {
 
     generateMatches(group3, group4, secondTurn);
     generateMatches(group4, group3, secondReturnMatches);
-
     addDoubleRound([...secondTurn, ...secondReturnMatches]);
 
     generateTrs(secondTurn, matcheSecondTurn);
     generateTrs(secondReturnMatches, matcheSecondReturnTurn);
+    
+    showWinTeam([...group3, ...group4]);
 }
 
 function generateTrs(arrayTeams, tbody) {
@@ -92,7 +100,7 @@ function generateTrs(arrayTeams, tbody) {
         tr.innerHTML = `
             <td>${item.team1}</td>
             <td>${item.team2}</td>
-            <td>${item.goalsOfTeamA} x ${item.goalsOfTeamB}</td>
+            <td>${item.goalsMatchOfTeamA} x ${item.goalsMatchOfTeamB}</td>
             <td>${item.state}</td>
             <td>${item.double}</td>
         `;
@@ -103,8 +111,8 @@ function generateTrs(arrayTeams, tbody) {
 }
 
 function changeTeams(group1, group2) {
-    const group3 = group1;
-    const group4 = group2;
+    const group3 = [...group1];
+    const group4 = [...group2];
     group4.push(group3.pop());
     group3.splice(1, 0, group4.shift()); 
     return { group3, group4 };
@@ -115,13 +123,15 @@ function generateMatches(group1, group2, matches) {
         let teamA = group1[i];
         let teamB = group2[i];
 
-        teamA.goals = generateGoals();
-        teamB.goals = generateGoals();
+        teamA.goalsMatch = generateGoalsMatch();
+        teamB.goalsMatch = generateGoalsMatch();
+        teamA.goals += teamA.goalsMatch;
+        teamB.goals += teamB.goalsMatch;
 
-        if(teamA.goals > teamB.goals) {
+        if(teamA.goalsMatch > teamB.goalsMatch) {
             teamA.wins += 1;
             teamA.points += 3;
-        } else if(teamA.goals === teamB.goals) {
+        } else if(teamA.goalsMatch === teamB.goalsMatch) {
             teamA.draws += 1;
             teamB.draws += 1;
             teamA.points += 1;
@@ -129,27 +139,21 @@ function generateMatches(group1, group2, matches) {
         } else {
             teamB.wins += 1;
             teamB.points += 3;
-        }
+        }     
 
         matches[i] = {
             team1: teamA.nameTeam,
             team2: teamB.nameTeam,
-            goalsOfTeamA: teamA.goals,
-            goalsOfTeamB: teamB.goals,
+            goalsMatchOfTeamA: teamA.goalsMatch,
+            goalsMatchOfTeamB: teamB.goalsMatch,
             state: teamA.stateOfTeam
         }
 
     }
 }
 
-function generateGoals() {
+function generateGoalsMatch() {
     return Math.round(Math.random() * (10));
-}
-
-function handleBackToForm() {
-    contentResults.style.display = "none";
-    contentForms.style.display = "flex";
-    alert("Voltando...");
 }
 
 function addDoubleRound(arrayTeams) {
@@ -178,4 +182,55 @@ function checkingDoubleRound(itemOne, itemTwo) {
         itemOne.double = "(Rodada Dupla)";
         itemTwo.double = "(Rodada Dupla)";
     } 
+}
+
+function showWinTeam(arrayTeams) {
+    let winTeam = arrayTeams[0];
+    for(let c = 1; arrayTeams.length > c; c++) {
+        if(arrayTeams[c].points > winTeam.points) {
+            winTeam = arrayTeams[c];
+        }
+    }
+
+    generateModalContent(winTeam);
+}
+
+function generateModalContent(winTeam) {
+    winComponent.innerHTML = "";
+    winComponent.appendChild(closeBtn);
+    addHeaderInModal(winTeam);
+    addUlInModal(winTeam);
+}
+
+function addHeaderInModal(winTeam) {
+    const h1 = document.createElement("h1");
+    h1.innerText = `O grande campeão foi o ${winTeam.nameTeam}`;
+    winComponent.appendChild(h1);
+}
+
+function addUlInModal(winTeam) {
+    const ul = document.createElement("ul");
+    ul.innerHTML = `
+        <li>Goals: ${winTeam.goals}</li>
+        <li>Pontos: ${winTeam.points}</li>
+        <li>Vitórias: ${winTeam.wins}</li>
+        <li>Empates: ${winTeam.draws}</li>
+        <li>Estado: ${winTeam.stateOfTeam}</li>
+    `;
+    winComponent.appendChild(ul);
+}
+
+function handleCloseModal() {
+    modal.style.display = "none";
+}
+
+function handleToWinComponent() {
+    modal.style.display = "block";
+    alert("O vencedor foi...");
+}
+
+function handleBackToForm() {
+    contentResults.style.display = "none";
+    contentForms.style.display = "flex";
+    alert("Voltando...");
 }
