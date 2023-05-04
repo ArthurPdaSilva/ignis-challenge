@@ -165,8 +165,8 @@ function addDoubleRound(arrayTeams) {
         arrayTeams[i].double = "";
     }
 
-    while(index < 5) {
-        while(i <= 5) {
+    while(index < arrayTeams.length) {
+        while(i < arrayTeams.length) {
             checkingDoubleRound(arrayTeams[index], arrayTeams[i]);
             i++;
         }
