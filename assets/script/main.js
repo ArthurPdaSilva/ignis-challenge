@@ -8,19 +8,20 @@ const backButton = document.getElementById("backButton");
 const winButton = document.getElementById("winButton");
 const closeButton = document.getElementById("close");
 
-forms.addEventListener('submit', generateSoccerMatches);
+forms.addEventListener('submit', startingSoccerMatches);
 backButton.addEventListener('click', handleBackToForm);
 winButton.addEventListener('click', handleToWinComponent);
 closeButton.addEventListener('click', handleCloseModal);
 
-function generateSoccerMatches(e) {
+function startingSoccerMatches(e) {
     e.preventDefault();
-    const arrayTeams = getTeamsArray();
+    const teams = getTeamsArray();
 
-    if(validationLengthOfTeams(arrayTeams)) {
+    if(validationLengthOfTeams(teams)) {
         openResults();
-        const teamsObject = generateTeamsToObject(arrayTeams);
-        generateRounds(teamsObject);
+        const formattedTeams = formattingTeamList(teams);
+        generateRounds(formattedTeams);
+        showWinTeam([...group3, ...group4]);
     } else {
         alert("O número de times precisa ser par!");
         return;
@@ -32,8 +33,8 @@ function getTeamsArray() {
     return teamsAdd.split('\n');
 }
 
-function validationLengthOfTeams(arrayTeams) {
-    return arrayTeams.length % 2 === 0;
+function validationLengthOfTeams(teams) {
+    return teams.length % 2 === 0;
 }
 
 function openResults() {
@@ -42,23 +43,29 @@ function openResults() {
     contentForms.style.display = "none";
 }
 
-function generateTeamsToObject(arrayTeams) {
-    const teams = [];
+function formattingTeamList(teams) {
+    const newTeamsList = [];
 
-    for(let i = 0; arrayTeams.length > i; i++) {
-        let team = arrayTeams[i].split(";");
-        teams[i] = { nameTeam: team[0], stateOfTeam: team[1], goalsMatch: 0, goals: 0, points: 0, wins: 0, draws: 0};
+    for(let i = 0; teams.length > i; i++) {
+        let team = teams[i].split(";");
+        newTeamsList[i] = { nameTeam: team[0], stateOfTeam: team[1], goalsMatch: 0, goals: 0, points: 0, wins: 0, draws: 0};
     }
 
-    return teams;
+    return newTeamsList;
 }
 
-function generateRounds(teamsObject) {
-    const middleList = Math.ceil(teamsObject.length / 2);
-    const group1 = teamsObject.slice(0, middleList);
-    const group2 = teamsObject.slice(middleList);
+function generateRounds(formattedTeams) {
+    const { group1, group2 } = divideTeams(formattedTeams);
     firstTurn(group1, group2);
     secondTurn(group1, group2);
+}
+
+function divideTeams(formattedTeams) {
+    const middleList = Math.ceil(formattedTeams.length / 2);
+    const group1 = formattedTeams.slice(0, middleList);
+    const group2 = formattedTeams.slice(middleList);
+
+    return { group1, group2 };
 }
 
 function firstTurn(group1, group2) {
@@ -82,7 +89,6 @@ function secondTurn(group1, group2) {
     startingMatches(group3, group4, secondTurn, secondReturnMatches);
     generateTrs(secondTurn, matcheSecondTurn);
     generateTrs(secondReturnMatches, matcheSecondReturnTurn);
-    showWinTeam([...group3, ...group4]);
 }
 
 function changeTeams(group1, group2) {
