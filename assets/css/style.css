@@ -30,8 +30,7 @@ body {
     background-repeat: no-repeat;
     min-height: 100vh;
     font-size: 16px;
-    overflow-y: hidden;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 textarea {
@@ -43,10 +42,11 @@ textarea {
 
 button {
     cursor: pointer;
+    font-weight: bold;
 }
 
 .contentForms, .contentResults, .winComponent {
-    animation: go-back 1s alternate;
+    animation: go-back 1.3s alternate;
 }
 
 @keyframes go-back {
@@ -103,9 +103,9 @@ button {
     background-color: var(--primary-color);
     color: var(--second-color);
     border: 0;
-    font-size: var(--font-pattern);
     border-radius: var(--radius-pattern);
     transition: all ease-in-out .3s;
+    font-size: var(--font-pattern);
 }
 
 .contentForms form button:hover {
@@ -126,7 +126,7 @@ table {
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 0.9em;
-    min-width: 500px;
+    width: 500px;
     box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.15);
 }
 
@@ -227,4 +227,44 @@ thead tr {
 
 .close:hover {
     transform: scale(1.2);
+}
+
+@media(max-width: 600px) {
+    .contentForms {
+        width: 80%;
+    }
+
+    .contentResults {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    .winComponent {
+        width: 90%;
+    }
+
+    .close {
+        font-size: 1.5rem;
+    }
+
+    .buttons button {
+        width: 40vw;
+    }
+
+    .games {
+        flex-direction: column;
+    }
+
+    .matche {
+        overflow-x: auto;
+    }
+
+    
+    table {
+        width: 100%;
+        margin: 0;
+        font-size: .7rem;
+        overflow: auto;
+    }
 }

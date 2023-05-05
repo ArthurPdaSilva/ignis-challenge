@@ -21,7 +21,6 @@ function startingSoccerMatches(e) {
         openResults();
         const formattedTeams = formattingTeamList(teams);
         generateRounds(formattedTeams);
-        showWinTeam([...group3, ...group4]);
     } else {
         alert("O número de times precisa ser par!");
         return;
@@ -75,6 +74,7 @@ function firstTurn(group1, group2) {
     const returnMatches = [];
     
     startingMatches(group1, group2, turn, returnMatches);
+    
     generateTrs(turn, matcheFirstTurn);
     generateTrs(returnMatches, matcheFirstReturnTurn);
 }
@@ -85,10 +85,12 @@ function secondTurn(group1, group2) {
     const secondTurn = [];
     const secondReturnMatches = [];
     const { group3, group4 } = changeTeams(group1, group2);
-
     startingMatches(group3, group4, secondTurn, secondReturnMatches);
+
     generateTrs(secondTurn, matcheSecondTurn);
     generateTrs(secondReturnMatches, matcheSecondReturnTurn);
+
+    showWinTeam([...group3, ...group4]);
 }
 
 function changeTeams(group1, group2) {
@@ -109,6 +111,7 @@ function generateMatches(group1, group2, matches) {
     for(let i = 0; group1.length > i; i++) {
         let teamA = group1[i];
         let teamB = group2[i];
+        
         generateValuesAndAddGoals(teamA, teamB);
 
         matches[i] = {
