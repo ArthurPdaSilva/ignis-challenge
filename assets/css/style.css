@@ -30,6 +30,8 @@ body {
     background-repeat: no-repeat;
     min-height: 100vh;
     font-size: 16px;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 textarea {
@@ -43,6 +45,19 @@ button {
     cursor: pointer;
 }
 
+.contentForms, .contentResults, .winComponent {
+    animation: go-back 1s alternate;
+}
+
+@keyframes go-back {
+    from {
+      transform: translateX(1000px);
+    }
+    to {
+      transform: translateX(0);
+    }
+}
+
 .contentForms, .winComponent {
     display: flex;
     flex-direction: column;
@@ -50,6 +65,20 @@ button {
     border-radius: var(--radius-pattern);
     padding: var(--spacing-pattern);
     min-height: 45vh;
+}
+
+.contentResults {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    color: var(--primary-color);
+    background-color: var(--second-color);
+    border-radius: var(--radius-pattern);
+    padding: var(--spacing-pattern);
+    gap: var(--spacing-pattern);
+    max-height: 90vh;
+    min-width: 80vw;
+    overflow-y: auto;
 }
 
 .contentForms h1, form {
@@ -81,20 +110,6 @@ button {
 
 .contentForms form button:hover {
     background-color: var(--primary-color-hover);
-}
-
-.contentResults {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    color: var(--primary-color);
-    background-color: var(--second-color);
-    border-radius: var(--radius-pattern);
-    padding: var(--spacing-pattern);
-    gap: var(--spacing-pattern);
-    max-height: 90vh;
-    min-width: 80vw;
-    overflow-y: auto;
 }
 
 .games {
@@ -183,6 +198,7 @@ thead tr {
 
 .winComponent h1 {
     text-align: center;
+    color: var(--primary-color);
 }
 
 .winComponent ul {
@@ -191,13 +207,24 @@ thead tr {
     gap: var(--spacing-pattern);
 }
 
-.winComponent li {
+.winComponent li span {
     font-weight: bold;
+    color: var(--primary-color);
     font-size: var(--font-pattern);
+}
+
+.winComponent li {
     list-style: none;
 }
 
 .close {
+    display: block;
     font-size: var(--font-pattern);
     cursor: pointer;
+    width: 10px;
+    transition: all ease-in-out .3s;
+}
+
+.close:hover {
+    transform: scale(1.2);
 }

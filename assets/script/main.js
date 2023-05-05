@@ -218,11 +218,11 @@ function addHeaderInModal(winTeam) {
 function addUlInModal(winTeam) {
     const ul = document.createElement("ul");
     ul.innerHTML = `
-        <li>Goals: ${winTeam.goals}</li>
-        <li>Pontos: ${winTeam.points}</li>
-        <li>Vitórias: ${winTeam.wins}</li>
-        <li>Empates: ${winTeam.draws}</li>
-        <li>Estado: ${winTeam.stateOfTeam}</li>
+        <li><span>Goals:</span> ${winTeam.goals}</li>
+        <li><span>Pontos:</span> ${winTeam.points}</li>
+        <li><span>Vitórias:</span> ${winTeam.wins}</li>
+        <li><span>Empates:</span> ${winTeam.draws}</li>
+        <li><span>Estado:</span> ${winTeam.stateOfTeam}</li>
     `;
     winComponent.appendChild(ul);
 }
