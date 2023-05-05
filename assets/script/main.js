@@ -37,7 +37,6 @@ function validationLengthOfTeams(teams) {
 }
 
 function openResults() {
-    alert("Gerando resultados...");
     contentResults.style.display = "flex";
     contentForms.style.display = "none";
 }
@@ -242,11 +241,9 @@ function handleCloseModal() {
 
 function handleToWinComponent() {
     modal.style.display = "block";
-    alert("O vencedor foi...");
 }
 
 function handleBackToForm() {
     contentResults.style.display = "none";
     contentForms.style.display = "flex";
-    alert("Voltando...");
 }
