@@ -152,18 +152,18 @@ function verifyPointsTeam(teamA, teamB) {
     }     
 }
 
-function addDoubleRound(arrayTeams) {
+function addDoubleRound(teams) {
     let c = 1;
     let i = c;
     let index = 0;
 
-    for(let i = 0; i < arrayTeams.length; i++) {
-        arrayTeams[i].double = "";
+    for(let i = 0; i < teams.length; i++) {
+        teams[i].double = "";
     }
 
-    while(index < arrayTeams.length) {
-        while(i < arrayTeams.length) {
-            checkingDoubleRound(arrayTeams[index], arrayTeams[i]);
+    while(index < teams.length) {
+        while(i < teams.length) {
+            checkingDoubleRound(teams[index], teams[i]);
             i++;
         }
 
@@ -180,10 +180,10 @@ function checkingDoubleRound(itemOne, itemTwo) {
     } 
 }
 
-function generateTrs(arrayTeams, tbody) {
+function generateTrs(teams, tbody) {
     tbody.innerHTML = "";
 
-    arrayTeams.map(item => {
+    teams.map(item => {
         let tr = document.createElement("tr");
 
         tr.innerHTML = `
@@ -199,11 +199,11 @@ function generateTrs(arrayTeams, tbody) {
     });
 }
 
-function showWinTeam(arrayTeams) {
-    let winTeam = arrayTeams[0];
-    for(let c = 1; arrayTeams.length > c; c++) {
-        if(arrayTeams[c].points > winTeam.points) {
-            winTeam = arrayTeams[c];
+function showWinTeam(teams) {
+    let winTeam = teams[0];
+    for(let c = 1; teams.length > c; c++) {
+        if(teams[c].points > winTeam.points) {
+            winTeam = teams[c];
         }
     }
 
