@@ -43,7 +43,7 @@ mesma cidade na mesma rodada, como no exemplo abaixo:
 
 Vasco vs Flamengo - Rio de Janeiro - Rodada 1 <br>
 Palmeiras vs Cruzeiro - São Paulo - Rodada 1 (RODADA DUPLA) <br>
-Santos vs Internacional - São Paulo - Rodada 1 (RODADA DUPLA <br>
+Santos vs Internacional - São Paulo - Rodada 1 (RODADA DUPLA) <br>
 
 ## Dicas
 * Crie um Fork e em seguida faça o clone.
